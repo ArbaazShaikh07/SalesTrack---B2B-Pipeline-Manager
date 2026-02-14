@@ -5,6 +5,8 @@ import PipelineBoard from './components/PipelineBoard';
 import LeadForm from './components/LeadForm';
 import AnalyticsSection from './components/AnalyticsSection';
 
+const DATA_VERSION = '2.0';
+
 const SAMPLE_LEADS = [
   {
     id: '1',
