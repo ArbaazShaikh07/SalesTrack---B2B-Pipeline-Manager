@@ -88,6 +88,8 @@ export const AnalyticsSection = ({ leads }) => {
   const serviceTypeData = getServiceTypeData();
   const stageData = getStageDistribution();
   const valueByService = getValueByService();
+  const objectionData = getObjectionDistribution();
+  const highPotentialData = getHighPotentialSegments();
 
   return (
     <div className="analytics-section" data-testid="analytics-section">
@@ -96,6 +98,10 @@ export const AnalyticsSection = ({ leads }) => {
         {renderBarChart(serviceTypeData, 'Leads per Service Type')}
         {renderBarChart(stageData, 'Stage Distribution')}
         {renderBarChart(valueByService, 'Total Value per Service Type', formatCurrency)}
+      </div>
+      <div className="analytics-grid" style={{ marginTop: '30px' }}>
+        {Object.keys(objectionData).length > 0 && renderBarChart(objectionData, 'Common Sales Blockers (Objections)')}
+        {renderBarChart(highPotentialData, 'High-Potential Segments (Avg Value | Prob | Win Rate)', (v) => v)}
       </div>
     </div>
   );
