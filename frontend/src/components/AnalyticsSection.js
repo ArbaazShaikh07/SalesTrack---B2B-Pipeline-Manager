@@ -23,6 +23,39 @@ export const AnalyticsSection = ({ leads }) => {
     return data;
   };
 
+  const getObjectionDistribution = () => {
+    const data = {};
+    leads.forEach(lead => {
+      if (lead.objectionType && lead.objectionType !== 'None') {
+        data[lead.objectionType] = (data[lead.objectionType] || 0) + 1;
+      }
+    });
+    return data;
+  };
+
+  const getHighPotentialSegments = () => {
+    const segments = {};
+    leads.forEach(lead => {
+      if (!segments[lead.serviceType]) {
+        segments[lead.serviceType] = { count: 0, totalValue: 0, avgProb: 0, wins: 0 };
+      }
+      segments[lead.serviceType].count++;
+      segments[lead.serviceType].totalValue += lead.estimatedDealValue;
+      segments[lead.serviceType].avgProb += lead.probability;
+      if (lead.stage === 'Closed Won') segments[lead.serviceType].wins++;
+    });
+    
+    const result = {};
+    Object.keys(segments).forEach(key => {
+      const s = segments[key];
+      const avgValue = s.totalValue / s.count;
+      const avgProb = s.avgProb / s.count;
+      const winRate = s.count > 0 ? (s.wins / s.count * 100) : 0;
+      result[key] = `₹${(avgValue / 100000).toFixed(1)}L | ${avgProb.toFixed(0)}% | ${winRate.toFixed(0)}% win`;
+    });
+    return result;
+  };
+
   const renderBarChart = (data, title, valueFormatter = (v) => v) => {
     const maxValue = Math.max(...Object.values(data));
     
