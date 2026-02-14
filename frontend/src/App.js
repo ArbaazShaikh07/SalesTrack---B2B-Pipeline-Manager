@@ -226,12 +226,15 @@ function App() {
   const [editingLead, setEditingLead] = useState(null);
 
   useEffect(() => {
+    const storedVersion = localStorage.getItem('bdPipelineVersion');
     const storedLeads = localStorage.getItem('bdPipelineLeads');
-    if (storedLeads) {
+    
+    if (storedVersion === DATA_VERSION && storedLeads) {
       setLeads(JSON.parse(storedLeads));
     } else {
       setLeads(SAMPLE_LEADS);
       localStorage.setItem('bdPipelineLeads', JSON.stringify(SAMPLE_LEADS));
+      localStorage.setItem('bdPipelineVersion', DATA_VERSION);
     }
   }, []);
 
